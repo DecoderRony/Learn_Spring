@@ -8,6 +8,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.List;
+import java.util.Objects;
+
 @SpringBootApplication
 public class JdbcConnectionApplication {
 
@@ -17,14 +20,27 @@ public class JdbcConnectionApplication {
 
 	@Bean
 	public CommandLineRunner cmdRunner(EmployeeDAO employeeDAO){
-		return runner -> createEmployee(employeeDAO);
+		return runner -> getEmployeeByFirstName(employeeDAO);
 	}
 
 	private void createEmployee(EmployeeDAO employeeDAO){
 		Employee newEmployee = new Employee("Arpit", "Das", "arpitdas118@gmail.com");
+		Employee newEmployee2 = new Employee("Madhurima", "Das", "madhuisgr8@gmail.com");
+		Employee newEmployee3 = new Employee("A L", "Das", "aldas@gmail.com");
 		employeeDAO.save(newEmployee);
-		System.out.println("Employee saved!!!");
-		System.out.println("Id for employee: " + newEmployee.getId());
+		employeeDAO.save(newEmployee2);
+		employeeDAO.save(newEmployee3);
+
+	}
+
+	private void getAllEmployees(EmployeeDAO employeeDAO){
+		List<Employee> employeeList = employeeDAO.findAll();
+		employeeList.stream().filter(Objects::nonNull).forEach(System.out::println);
+	}
+
+	private void getEmployeeByFirstName(EmployeeDAO employeeDAO){
+		List<Employee> employeeList = employeeDAO.findByFirstName("Arpit");
+		employeeList.stream().filter(Objects::nonNull).forEach(System.out::println);
 	}
 
 }
