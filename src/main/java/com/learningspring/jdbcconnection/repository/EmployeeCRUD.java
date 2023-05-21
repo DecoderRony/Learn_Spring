@@ -31,7 +31,9 @@ public class EmployeeCRUD implements EmployeeDAO {
 
     @Override
     public List<Employee> findByFirstName(String firstName) {
+        // in typed query to pass a data dynamically we use ":anyName". This key is replaced later by the data you pass
         TypedQuery<Employee> queries = entityManager.createQuery("FROM Employee WHERE firstName=:fName order by id asc", Employee.class);
+        // ":anyname" getting replaced
         queries.setParameter("fName", firstName);
         return queries.getResultList();
     }
